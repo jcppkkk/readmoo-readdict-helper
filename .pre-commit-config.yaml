@@ -8,4 +8,6 @@ repos:
         files: ^(src/readmoo-readdict-helper\.js|templates/index\.html)$
         pass_filenames: false
         # Fast skip is implemented in the script
+        # Requires: terser (npm install -g terser) for optimal minification
+        # Requires: uv (https://docs.astral.sh/uv/) for dependency management
         additional_dependencies: [jinja2]

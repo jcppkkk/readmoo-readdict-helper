@@ -1,9 +1,25 @@
 [project]
 name = "readmoo-readdict-helper"
 version = "0.1.0"
-description = "Add your description here"
-readme = "README.md"
+description = "讀墨嗜讀輔助工具 - 顯示使用嗜讀方案的成本比例"
+authors = [{ name = "Jethro Au", email = "example@example.com" }]
 requires-python = ">=3.13"
-dependencies = [
+readme = "README.md"
+license = { text = "MIT" }
+dependencies = []
+
+[project.urls]
+Repository = "https://github.com/jethroau/readmoo-readdict-helper"
+
+[tool.ruff]
+target-version = "py313"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "B", "I"]
+
+[dependency-groups]
+dev = [
     "jinja2>=3.1.6",
+    "pre-commit>=4.2.0",
 ]

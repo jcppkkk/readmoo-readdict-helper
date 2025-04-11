@@ -59,31 +59,32 @@ javascript:(function(){const PRICE_PER_POINT=999/6;const DISCOUNT_THRESHOLD=0.75
 
 ### 開發設置
 
-1. 安裝 pre-commit
+1. 安裝 uv （高速 Python 套件管理器）
 ```bash
-pip install pre-commit
+# macOS 與 Linux
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Windows
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
 
-2. 安裝 Jinja2 (用於模板)
+2. 安裝開發相依套件
 ```bash
-pip install jinja2
+uv sync
 ```
 
-3. 安裝 git hooks
-```bash
-pre-commit install
-```
-
-4. 修改源代碼
+3. 修改源代碼
 當你修改 `src/readmoo-readdict-helper.js` 或 `templates/index.html` 並提交變更時，
 pre-commit hook 將自動更新 `index.html` 中的 bookmarklet 代碼。
 
 你也可以手動運行更新腳本:
 ```bash
-python scripts/update_bookmarklet.py
+uv run python scripts/update_bookmarklet.py
 ```
 
 ### 特性
 - **精簡自動化**: 源 JavaScript 文件會被自動精簡並更新到 bookmarklet
 - **冪等性**: 只有在源代碼發生變化時才會更新 HTML
 - **快速跳過**: 如果源文件沒有變更，則跳過更新步驟
+- **專業壓縮**: 使用 terser 提供專業級的 JavaScript 代碼壓縮
+- **高效依賴管理**: 使用 uv 進行超高速套件管理 (比 pip 快 10-100 倍)
