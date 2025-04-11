@@ -5,7 +5,7 @@ repos:
         name: Update Bookmarklet
         entry: uv run python scripts/update_bookmarklet.py
         language: python
-        files: ^(src/readmoo-readdict-helper\.js|templates/index\.html)$
+        files: ^(src/readmoo-readdict-helper\.js|templates/index\.html|scripts/update_bookmarklet\.py)$
         pass_filenames: false
         # Fast skip is implemented in the script
         # Requires: terser (npm install -g terser) for optimal minification

@@ -14,10 +14,10 @@ Features:
 
 import hashlib
 import os
-import re
 import subprocess
 import sys
 import tempfile
+import urllib.parse
 
 from jinja2 import Template
 
@@ -28,9 +28,7 @@ def minify_js_with_terser(js_code):
     Requires terser to be installed globally (npm install -g terser)
     """
     # Create a temporary file for the input
-    with tempfile.NamedTemporaryFile(
-        suffix=".js", mode="w+", delete=False
-    ) as temp_input:
+    with tempfile.NamedTemporaryFile(suffix=".js", mode="w+", delete=False) as temp_input:
         temp_input.write(js_code)
         temp_input_path = temp_input.name
 
@@ -50,34 +48,20 @@ def minify_js_with_terser(js_code):
             check=True,
         )
         minified_js = result.stdout.strip()
-        return minified_js
+        # URL-encode the minified JavaScript
+        encoded_js = urllib.parse.quote(minified_js)
+        return encoded_js
     except subprocess.CalledProcessError as e:
         print(f"Error running terser: {e}")
         print(f"Stderr: {e.stderr}")
-        # Fall back to basic minification if terser fails
-        return basic_minify_js(js_code)
+        sys.exit(1)  # Exit if terser fails
     except FileNotFoundError:
-        print("terser not found, falling back to basic minification")
-        print("For better results, install terser: npm install -g terser")
-        # Fall back to basic minification if terser is not installed
-        return basic_minify_js(js_code)
+        print("terser not found. Please install terser: npm install -g terser")
+        sys.exit(1)  # Exit if terser is not installed
     finally:
         # Clean up the temporary file
         if os.path.exists(temp_input_path):
             os.unlink(temp_input_path)
-
-
-def basic_minify_js(js_code):
-    """Simple minification of JavaScript code (fallback method)."""
-    # Remove comments
-    js_code = re.sub(r"/\*\*[\s\S]*?\*/", "", js_code)
-    js_code = re.sub(r"//.*?\n", "", js_code)
-
-    # Remove extra whitespace and newlines
-    js_code = re.sub(r"\s+", " ", js_code)
-    js_code = js_code.strip()
-
-    return js_code
 
 
 def get_file_hash(file_path):
@@ -133,9 +117,7 @@ def main():
             current_html = f.read()
 
         if current_html == rendered_html:
-            print(
-                f"HTML file {html_path} content is already up to date. No changes needed."
-            )
+            print(f"HTML file {html_path} content is already up to date. No changes needed.")
             return 0
 
     # Write the rendered HTML to the output file
