@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>讀墨嗜讀輔助工具</title>
+    <style>
+        body {
+            font-family: 'Microsoft JhengHei', 'PingFang TC', sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            margin-bottom: 30px;
+        }
+
+        pre {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 14px;
+        }
+
+        .bookmarklet {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 4px;
+            display: inline-block;
+            margin: 10px 0;
+        }
+
+        .bookmarklet:hover {
+            background-color: #45a049;
+        }
+
+        .warning {
+            background-color: #fff8e1;
+            padding: 10px;
+            border-left: 5px solid #ffc107;
+            margin: 15px 0;
+        }
+
+        .demo {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .item-price-box {
+            padding: 10px;
+            margin: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .item-price {
+            font-weight: bold;
+        }
+
+        .example {
+            margin-bottom: 15px;
+        }
+
+        .example-label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 15px 0;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 8px;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .discount-good {
+            background-color: #c8facc;
+            border-radius: 4px;
+            padding: 2px 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>讀墨嗜讀輔助工具</h1>
+        <p>這是一個簡單的瀏覽器書籤工具（Bookmarklet），可以幫助你在讀墨網站上更明智地選擇使用嗜讀方案購買書籍。</p>
+
+        <div class="warning">
+            <p><strong>注意：</strong>請將下方綠色按鈕拖曳到您的瀏覽器書籤列，或右鍵選擇「加入書籤」。</p>
+        </div>
+
+        <a href="javascript:(function(){const PRICE_PER_POINT=999/6;const DISCOUNT_THRESHOLD=0.75;const getPointsNeeded=(price)=>{return Math.ceil(price/250);};const priceElements=document.querySelectorAll('.item-price-box .item-price');priceElements.forEach(el=>{const match=el.textContent.match(/NT\$ ?(\d+)/);if(!match)return;const price=parseInt(match[1],10);const points=getPointsNeeded(price);const cost=points*PRICE_PER_POINT;const discount=cost/price;if(discount<=DISCOUNT_THRESHOLD){el.style.backgroundColor='#c8facc';el.style.borderRadius='4px';el.style.padding='2px 4px';}const label=document.createElement('span');label.textContent=` (領書=${Math.round(discount*100)}%)`;label.style.color=discount<=DISCOUNT_THRESHOLD?'#0a8f3c':'#555';label.style.fontSize='0.9em';label.style.marginLeft='4px';el.appendChild(label);})})();"
+            class="bookmarklet">
+            讀墨嗜讀輔助
+        </a>
+    </div>
+
+    <div class="container">
+        <h2>功能</h2>
+        <p>此工具會在讀墨購物車與代購清單中：</p>
+        <ol>
+            <li>計算每本書使用嗜讀方案的成本比例（以百分比顯示）</li>
+            <li>將特別值得使用嗜讀方案購買的書籍（成本比例低於75%）以綠色高亮提示</li>
+            <li>在每本書的價格旁邊顯示使用嗜讀方案的成本比例</li>
+        </ol>
+    </div>
+
+    <div class="container">
+        <h2>嗜讀方案說明</h2>
+        <p>讀墨嗜讀方案（999元/月）提供6點領書額度，依照每本書的價格需要不同點數：</p>
+        <ul>
+            <li>0-250元 ➜ 1點</li>
+            <li>251-500元 ➜ 2點</li>
+            <li>501-750元 ➜ 3點</li>
+            <li>751-1000元 ➜ 4點</li>
+            <li>依此類推（每250元一階）</li>
+        </ul>
+        <p>因此每點的成本約為166.67元，本工具會計算使用嗜讀領書的實際成本比例。</p>
+
+        <h3>效益範例</h3>
+        <table>
+            <tr>
+                <th>書籍價格</th>
+                <th>需要點數</th>
+                <th>使用嗜讀成本</th>
+                <th>成本比例</th>
+                <th>適合使用嗜讀？</th>
+            </tr>
+            <tr>
+                <td>NT$ 230</td>
+                <td>1點</td>
+                <td>166.67元</td>
+                <td>72%</td>
+                <td>✅ 優惠</td>
+            </tr>
+            <tr>
+                <td>NT$ 350</td>
+                <td>2點</td>
+                <td>333.33元</td>
+                <td>95%</td>
+                <td>❌ 不優惠</td>
+            </tr>
+            <tr>
+                <td>NT$ 499</td>
+                <td>2點</td>
+                <td>333.33元</td>
+                <td>67%</td>
+                <td>✅ 優惠</td>
+            </tr>
+            <tr>
+                <td>NT$ 520</td>
+                <td>3點</td>
+                <td>500.00元</td>
+                <td>96%</td>
+                <td>❌ 不優惠</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="container">
+        <h2>使用示範</h2>
+        <div class="demo">
+            <h3>購物車示範</h3>
+            <div class="item-price-box">
+                <span class="item-title">小說A</span>
+                <span class="item-price">NT$ 230</span>
+            </div>
+            <div class="item-price-box">
+                <span class="item-title">小說B</span>
+                <span class="item-price">NT$ 350</span>
+            </div>
+            <div class="item-price-box">
+                <span class="item-title">小說C</span>
+                <span class="item-price">NT$ 499</span>
+            </div>
+            <div class="item-price-box">
+                <span class="item-title">小說D</span>
+                <span class="item-price">NT$ 520</span>
+            </div>
+
+            <h4>效果預覽</h4>
+            <div class="item-price-box">
+                <span class="item-title">小說A</span>
+                <span class="item-price discount-good">NT$ 230<span
+                        style="color: #0a8f3c; font-size: 0.9em; margin-left: 4px;"> (領書=72%)</span></span>
+            </div>
+            <div class="item-price-box">
+                <span class="item-title">小說B</span>
+                <span class="item-price">NT$ 350<span style="color: #555; font-size: 0.9em; margin-left: 4px;">
+                        (領書=95%)</span></span>
+            </div>
+            <div class="item-price-box">
+                <span class="item-title">小說C</span>
+                <span class="item-price discount-good">NT$ 499<span
+                        style="color: #0a8f3c; font-size: 0.9em; margin-left: 4px;"> (領書=67%)</span></span>
+            </div>
+            <div class="item-price-box">
+                <span class="item-title">小說D</span>
+                <span class="item-price">NT$ 520<span style="color: #555; font-size: 0.9em; margin-left: 4px;">
+                        (領書=96%)</span></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>使用方法</h2>
+        <ol>
+            <li>建立新的書籤</li>
+            <li>名稱自訂（例如：「讀墨嗜讀輔助」）</li>
+            <li>在網址欄位貼上程式碼（可從上方的綠色按鈕右鍵 → 複製連結取得）</li>
+            <li>儲存書籤</li>
+            <li>當你在瀏覽讀墨的購物車或代購清單時，點擊此書籤即可看到效果</li>
+        </ol>
+    </div>
+
+    <div class="container">
+        <h2>原始碼</h2>
+        <p>完整的程式碼可在<a href="https://github.com/jethroau/readmoo-readdict-helper">GitHub</a>上查看。</p>
+        <pre><code>/**
+ * 讀墨嗜讀輔助工具
+ */
+(function() {
+  // 嗜讀方案：每月999元可獲得6點
+  const PRICE_PER_POINT = 999 / 6;
+  
+  // 折扣閾值：低於此比例的書會被標記為特別划算
+  const DISCOUNT_THRESHOLD = 0.75;
+
+  /**
+   * 計算書籍價格所需的點數
+   * @param {number} price - 書籍價格（新台幣）
+   * @returns {number} - 所需點數
+   */
+  const getPointsNeeded = (price) => {
+    return Math.ceil(price / 250);
+  };
+
+  // 找出所有價格元素
+  const priceElements = document.querySelectorAll(".item-price-box .item-price");
+
+  // 處理每個價格元素
+  priceElements.forEach(el => {
+    // 解析價格文字（格式如 "NT$ 350"）
+    const match = el.textContent.match(/NT\$ ?(\d+)/);
+    if (!match) return;
+    
+    const price = parseInt(match[1], 10);
+    const points = getPointsNeeded(price);
+    const cost = points * PRICE_PER_POINT;
+    const discount = cost / price;
+
+    // 如果折扣夠低（特別划算），使用綠色背景標示
+    if (discount <= DISCOUNT_THRESHOLD) {
+      el.style.backgroundColor = "#c8facc"; // 淡綠底
+      el.style.borderRadius = "4px";
+      el.style.padding = "2px 4px";
+    }
+
+    // 加入折扣百分比標籤
+    const label = document.createElement("span");
+    label.textContent = ` (領書=${Math.round(discount * 100)}%)`;
+    label.style.color = discount <= DISCOUNT_THRESHOLD ? "#0a8f3c" : "#555";
+    label.style.fontSize = "0.9em";
+    label.style.marginLeft = "4px";
+    el.appendChild(label);
+  });
+})();</code></pre>
+    </div>
+
+    <footer style="margin-top: 50px; text-align: center; color: #777; font-size: 0.8em;">
+        <p>讀墨嗜讀輔助工具 © 2023 | <a href="https://github.com/jethroau/readmoo-readdict-helper">GitHub</a></p>
+    </footer>
+</body>
+
+</html>
