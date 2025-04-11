@@ -1,0 +1,11 @@
+repos:
+  - repo: local
+    hooks:
+      - id: update-bookmarklet
+        name: Update Bookmarklet
+        entry: uv run python scripts/update_bookmarklet.py
+        language: python
+        files: ^(src/readmoo-readdict-helper\.js|templates/index\.html)$
+        pass_filenames: false
+        # Fast skip is implemented in the script
+        additional_dependencies: [jinja2]

@@ -46,3 +46,44 @@ javascript:(function(){const PRICE_PER_POINT=999/6;const DISCOUNT_THRESHOLD=0.75
 - 本工具僅在讀墨網站的購物車與代購清單頁面有效
 - 計算基於嗜讀方案999元6點的定價
 - 標示綠色的書籍代表使用嗜讀方案特別划算（成本低於原價的75%）
+
+## 開發者資訊
+
+本專案使用模板系統和 pre-commit hooks 來保持 bookmarklet 程式碼的一致性。
+
+### 專案結構
+- `src/readmoo-readdict-helper.js`: 主要的源代碼文件
+- `templates/index.html`: HTML 模板文件，包含網站結構和 bookmarklet 佔位符
+- `scripts/update_bookmarklet.py`: 自動更新 bookmarklet 的腳本
+- `index.html`: 最終生成的網站文件（由模板生成）
+
+### 開發設置
+
+1. 安裝 pre-commit
+```bash
+pip install pre-commit
+```
+
+2. 安裝 Jinja2 (用於模板)
+```bash
+pip install jinja2
+```
+
+3. 安裝 git hooks
+```bash
+pre-commit install
+```
+
+4. 修改源代碼
+當你修改 `src/readmoo-readdict-helper.js` 或 `templates/index.html` 並提交變更時，
+pre-commit hook 將自動更新 `index.html` 中的 bookmarklet 代碼。
+
+你也可以手動運行更新腳本:
+```bash
+python scripts/update_bookmarklet.py
+```
+
+### 特性
+- **精簡自動化**: 源 JavaScript 文件會被自動精簡並更新到 bookmarklet
+- **冪等性**: 只有在源代碼發生變化時才會更新 HTML
+- **快速跳過**: 如果源文件沒有變更，則跳過更新步驟
